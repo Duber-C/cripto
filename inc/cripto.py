@@ -10,6 +10,8 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 def leerArchivo(file_dir):
     s = ''
+    path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    print(f"{path}\{file_dir}")
     try:
         with open(file_dir) as f:
             s = f.read()
@@ -58,10 +60,10 @@ def imprimir(text):
 if __name__ == "__main__":
 
     # variables globales 
-    JFILE = json.loads(leerArchivo('variables.json'))
+    JFILE = json.loads(leerArchivo('inc\\variables.json'))
     PASSWORD = ''
-    FILE_DIR = JFILE['file_dir']
-    SALT_DIR = JFILE['salt']
+    FILE_DIR = f"files\{JFILE['file_dir']}"
+    SALT_DIR = f"files\{JFILE['salt']}"
     TEXT = ''
     OPTIONS = {'d': 'desencriptar: muestra la informacion desencriptada del archivo seleccionado', 
                 'n': 'nuevo: nueva entrada en un archivo encriptado',
@@ -147,7 +149,7 @@ if __name__ == "__main__":
                 break
 
         elif args in ['crearsal', 's']:
-            escribirArchivo(input('nombre del archivo: ') + '.txt', str(os.urandom(256)))
+            escribirArchivo(f"files\{input('nombre del archivo: ')}.txt", str(os.urandom(256)))
             log += 'se ha creado la sal..'
 
         elif args in ['encriptar', 'e']:
@@ -164,17 +166,17 @@ if __name__ == "__main__":
         elif args in ['sarchivo', 'sa']:
             FILE_DIR = input('ruta o nombre del archivo: ')
             JFILE['file_dir'] = FILE_DIR
-            escribirArchivo('variables.json', json.dumps(JFILE))
+            escribirArchivo('inc\\variables.json', json.dumps(JFILE))
     
 
         elif args in ['ssal', 'ss']:
-            SALT_DIR = input('ruta o nombre de la sal: ')
-            JFILE['salt'] = SALT_DIR
-            escribirArchivo('variables.json', json.dumps(JFILE))
+            SALT_DIR = input('ruta de la sal: ')
+            JFILE['salt'] = f"{SALT_DIR}.txt"
+            escribirArchivo('inc\\variables.json', json.dumps(JFILE))
 
         elif args in ['help', 'h']:
             for i in OPTIONS.keys():
-                print('-> {}: \n    {}'.format(i, OPTIONS[i]))
+                print('-> {}: \t    {}'.format(i, OPTIONS[i]))
         
         elif args in ['g', 'generar']:
             letras = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()[]=+-_?~"
