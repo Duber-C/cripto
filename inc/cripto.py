@@ -86,7 +86,7 @@ if __name__ == "__main__":
     args = ''
     while args != 'salir':
         args = input(': ')
-        log = '-> '
+        log = '\t -> '
               
         if args in ['desencriptar', 'd']: 
             if FILE_DIR == '':
